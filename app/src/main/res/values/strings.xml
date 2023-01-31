@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">PixabayTest</string>
+    <string name="search_image">Search Image</string>
+    <string name="likes">likes</string>
+    <string name="user_name">User Name</string>
+    <string name="views">views</string>
+    <string name="about_image">About Image</string>
+    <string name="comments">Comments</string>
+    <string name="no_comments_yet">Pixabay API doesn`t provide content</string>
+    <string name="similar_images">Similar Images</string>
+    <string name="saved_successfully">Saved!</string>
+</resources>

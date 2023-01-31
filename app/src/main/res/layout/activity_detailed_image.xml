@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.DetailedImageActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="start"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/back"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tv_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/about_image"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_saved_in_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:text="@string/saved_successfully"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            android:layout_marginEnd="10dp"
+            app:drawableEndCompat="@drawable/ic_saved_25"
+            app:drawableTint="@color/black"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/image_download_in_toolbar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_download"
+            tools:ignore="ContentDescription" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar">
+
+        <RelativeLayout
+            android:id="@+id/main_relative_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/image_detailed_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                tools:ignore="ContentDescription"
+                tools:layout_height="300dp" />
+
+            <TextView
+                android:id="@+id/tv_views"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image_detailed_view"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="@string/views"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/image_like"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignTop="@id/tv_likes"
+                android:layout_alignEnd="@+id/tv_likes"
+                android:layout_alignBottom="@id/tv_likes"
+                android:layout_marginEnd="38dp"
+                android:src="@drawable/ic_heart_50"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tv_likes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image_detailed_view"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:text="@string/likes"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_user_avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_views"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="30dp">
+
+                <ImageView
+                    android:id="@+id/image_user_avatar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    tools:ignore="ContentDescription" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/card_user_avatar"
+                android:layout_alignBottom="@id/card_user_avatar"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="9dp"
+                android:layout_toEndOf="@id/card_user_avatar"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center|start"
+                android:padding="5dp"
+                android:text="@string/user_name"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_user_avatar"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:padding="7dp"
+                android:text="@string/comments"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+            <View
+                android:id="@+id/view_btwn_image_n_rv"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/tv_comments"
+                android:layout_marginTop="8dp"
+                android:background="#CB000000" />
+
+            <TextView
+                android:id="@+id/tv_similar_photos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view_btwn_image_n_rv"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:text="@string/similar_images"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_similar_photos"
+                app:spanCount="2"
+                tools:listitem="@layout/item_images" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
