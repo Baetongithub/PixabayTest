@@ -16,8 +16,11 @@ import com.example.pixabaytest.data.model.Hit
 import com.example.pixabaytest.databinding.ActivityMainBinding
 import com.example.pixabaytest.ui.DetailedImageActivity
 import com.example.pixabaytest.ui.load_state.MyLoadStateAdapter
+import com.example.pixabaytest.utils.CheckInternet
 import com.example.pixabaytest.utils.Constants
 import com.example.pixabaytest.utils.extensions.collect
+import com.example.pixabaytest.utils.extensions.gone
+import com.example.pixabaytest.utils.extensions.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -41,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         initViews()
         setUpAdapter()
+        checkInternet()
 
         lifecycleScope.launch {
             viewModel.searchRepos("hello").collectLatest { pagingData ->
@@ -102,6 +106,15 @@ class MainActivity : AppCompatActivity() {
                     1
                 }
             }
+        }
+    }
+
+    private fun checkInternet(){
+        val ccs = CheckInternet(application)
+        ccs.observe(this) {
+            vb.tvNoInternetMainActivity.gone = it
+            vb.btnRetryMain.gone = it
+            vb.recyclerView.visible = it
         }
     }
 
