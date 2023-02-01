@@ -12,24 +12,26 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
-import com.example.pixabaytest.databinding.ActivityMainBinding
-import com.example.pixabaytest.databinding.ItemLoadStateBinding
 import com.example.pixabaytest.data.model.Hit
+import com.example.pixabaytest.databinding.ActivityMainBinding
 import com.example.pixabaytest.ui.DetailedImageActivity
-import com.example.pixabaytest.ui.main_load_image.load_state.FooterLoadStateAdapter
-import com.example.pixabaytest.ui.main_load_image.load_state.FooterViewHolder
+import com.example.pixabaytest.ui.load_state.MyLoadStateAdapter
 import com.example.pixabaytest.utils.Constants
+import com.example.pixabaytest.utils.extensions.collect
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var vb: ActivityMainBinding
+
     private val pagingAdapter = ImagePagerAdapter(this::onItemClickListener)
-    private var footerLoadStateHolder: FooterViewHolder? = null
     private val gridLayoutManager = GridLayoutManager(this, 2)
+    private val loadStateAdapter = MyLoadStateAdapter { pagingAdapter.retry() }
     private val viewModel: LoadImageViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,14 +40,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(vb.root)
 
         initViews()
-        observeLoadState()
+        setUpAdapter()
 
         lifecycleScope.launch {
             viewModel.searchRepos("hello").collectLatest { pagingData ->
                 pagingAdapter.submitData(pagingData)
             }
         }
-        setUpRV()
     }
 
     private fun initViews() {
@@ -68,17 +69,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-//
-//        viewModel.liveModel(vb.etSearchImage.text.toString(), page).observe(this) {
-//            list.addAll(it.hits)
-//            adapter.notifyItemInserted(list.size - 1)
-//        }
 
+    private fun setUpAdapter() {
 
-    private fun setUpRV() {
+        collect(flow = pagingAdapter.loadStateFlow
+            .distinctUntilChangedBy { it.source.refresh }
+            .map { it.refresh },
+            action = { pagingAdapter.retry() })
+
         vb.recyclerView.apply {
             layoutManager = gridLayoutManager
-            adapter = this@MainActivity.pagingAdapter
+            adapter = pagingAdapter.withLoadStateFooter(loadStateAdapter)
+
             addOnScrollListener(object : OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -88,26 +90,13 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
+        centralizeRetryButton()
     }
 
-    private fun observeLoadState() {
-        //also use adapter.addLoadStateListener
-        lifecycleScope.launch {
-            pagingAdapter.loadStateFlow.collectLatest { state ->
-                // main indicator in the center of the screen
-                footerLoadStateHolder?.bind(state.refresh)
-            }
-        }
-        vb.recyclerView.adapter =
-            pagingAdapter.withLoadStateFooter(FooterLoadStateAdapter(pagingAdapter::retry))
-        footerLoadStateHolder = FooterViewHolder(ItemLoadStateBinding.inflate(layoutInflater)) {
-            pagingAdapter.retry()
-        }
-
-        // to centralize the retry button
+    private fun centralizeRetryButton() {
         gridLayoutManager.spanSizeLookup = object : SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                return if (position == pagingAdapter.itemCount && pagingAdapter.itemCount > 0) {
+                return if (position == pagingAdapter.itemCount && loadStateAdapter.itemCount > 0) {
                     2
                 } else {
                     1
