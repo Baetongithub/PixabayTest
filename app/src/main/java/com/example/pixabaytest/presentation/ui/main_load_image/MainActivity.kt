@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
-import com.example.pixabaytest.data.model.Hit
 import com.example.pixabaytest.databinding.ActivityMainBinding
+import com.example.pixabaytest.domain.model.Hit
 import com.example.pixabaytest.presentation.ui.deatiled_images.DetailedImageActivity
 import com.example.pixabaytest.presentation.ui.load_state.MyLoadStateAdapter
 import com.example.pixabaytest.presentation.utils.CheckInternet
@@ -44,31 +44,33 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerView()
         checkInternet()
 
+        loadDefaultRequestedImages("hello")
+    }
+
+    private fun loadDefaultRequestedImages(request: String) {
+
         lifecycleScope.launch {
-            viewModel.searchRepos("hello").collectLatest { pagingData ->
+            viewModel.findImage(request).collectLatest { pagingData ->
                 pagingAdapter.submitData(pagingData)
             }
         }
     }
 
     private fun initViews() {
-
-        with(vb) {
-            fabSearch.setOnClickListener {
-                loadImages()
-            }
+        vb.fabSearch.setOnClickListener {
+            loadImages()
         }
     }
 
     private fun onItemClickListener(hit: Hit) {
         val intent = Intent(this, DetailedImageActivity::class.java)
-            .putExtra(Constants.SEND_HIT_EXTRA, hit)
+            .putExtra(Constants.HIT_EXTRA, hit)
         startActivity(intent)
     }
 
     private fun loadImages() {
         lifecycleScope.launch {
-            viewModel.searchRepos(vb.etSearchImage.text.toString()).collectLatest { pagingData ->
+            viewModel.findImage(vb.etSearchImage.text.toString()).collectLatest { pagingData ->
                 pagingAdapter.submitData(pagingData)
             }
         }
@@ -88,16 +90,18 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
+        loadStateListener()
+        centralizeRetryButton()
+    }
 
+    private fun loadStateListener() = with(vb) {
         pagingAdapter.addLoadStateListener { loadStates ->
             recyclerView.isVisible = loadStates.refresh is LoadState.NotLoading
             progressBar.isVisible = loadStates.refresh is LoadState.Loading
             tvNoInternet.isVisible = loadStates.refresh is LoadState.Error
             btnRetry.isVisible = loadStates.refresh is LoadState.Error
         }
-
         btnRetry.setOnClickListener { pagingAdapter.retry() }
-        centralizeRetryButton()
     }
 
     private fun centralizeRetryButton() {

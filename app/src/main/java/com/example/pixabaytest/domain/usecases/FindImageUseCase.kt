@@ -1,4 +1,10 @@
 package com.example.pixabaytest.domain.usecases
 
-class FindImageUseCase {
+import com.example.pixabaytest.domain.repository.ImageRepository
+import javax.inject.Inject
+
+class FindImageUseCase @Inject constructor(
+    private val repository: ImageRepository
+) {
+    fun findImage(keyWord: String) = repository.getPagedImages(keyWord = keyWord)
 }

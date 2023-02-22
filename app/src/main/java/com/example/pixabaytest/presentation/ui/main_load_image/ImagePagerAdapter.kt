@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.pixabaytest.databinding.ItemImagesBinding
-import com.example.pixabaytest.data.model.Hit
+import com.example.pixabaytest.domain.model.Hit
 
 class ImagePagerAdapter(private val onItemClick: (hit: Hit) -> Unit) :
     PagingDataAdapter<Hit, ImagePagerAdapter.PixaViewHolder>(UsersDiffCallback()) {
@@ -16,8 +16,12 @@ class ImagePagerAdapter(private val onItemClick: (hit: Hit) -> Unit) :
     override fun onBindViewHolder(holder: PixaViewHolder, position: Int) {
         val currentImage = getItem(position)
         with(holder.binding) {
-            loadUserPhoto(images, currentImage?.webformatURL!!)
-            images.setOnClickListener { onItemClick(currentImage) }
+            currentImage?.webformatURL?.let { loadUserPhoto(images, it) }
+            images.setOnClickListener {
+                if (currentImage != null) {
+                    onItemClick(currentImage)
+                }
+            }
         }
     }
 

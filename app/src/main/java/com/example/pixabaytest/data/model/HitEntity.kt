@@ -1,7 +1,5 @@
 package com.example.pixabaytest.data.model
 
-import java.io.Serializable
-
 data class HitEntity(
     val id: Int,
     val comments: Int,
@@ -24,4 +22,4 @@ data class HitEntity(
     val webformatHeight: Int,
     val webformatURL: String,
     val webformatWidth: Int
-): Serializable
+)

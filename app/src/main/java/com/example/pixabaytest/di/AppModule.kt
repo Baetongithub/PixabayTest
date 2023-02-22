@@ -4,7 +4,10 @@ import android.content.Context
 import com.example.pixabaytest.BuildConfig
 import com.example.pixabaytest.BuildConfig.BASE_URL
 import com.example.pixabaytest.data.remote.network.PixaAPI
-import com.example.pixabaytest.utils.network_helpers.NetworkConnectionInterceptor
+import com.example.pixabaytest.data.repository.ImageRepositoryImpl
+import com.example.pixabaytest.domain.repository.ImageRepository
+import com.example.pixabaytest.presentation.utils.SharedPrefsManager
+import com.example.pixabaytest.presentation.utils.network_helpers.NetworkConnectionInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,5 +53,11 @@ object AppModule {
     @Singleton
     fun provideAPI(retrofit: Retrofit): PixaAPI {
         return retrofit.create(PixaAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFindImageRepository(pixaAPI: PixaAPI): ImageRepository {
+        return ImageRepositoryImpl(pixaAPI = pixaAPI)
     }
 }

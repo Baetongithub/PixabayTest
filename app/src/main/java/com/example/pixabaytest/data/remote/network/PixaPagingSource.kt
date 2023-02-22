@@ -2,7 +2,10 @@ package com.example.pixabaytest.data.remote.network
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.pixabaytest.data.model.Hit
+import com.example.pixabaytest.data.mappers.toHit
+import com.example.pixabaytest.domain.model.Hit
+import retrofit2.HttpException
+import java.io.IOException
 
 class PixaPagingSource(
     private val pixaAPI: PixaAPI,
@@ -15,13 +18,16 @@ class PixaPagingSource(
         return try {
             val response = pixaAPI.getImages(keyWord = keyWord, page = page)
 
+            val hits = response.hits.map { it.toHit() }
             LoadResult.Page(
-                data = response.hits,
+                data = hits,
                 prevKey = if (page == STARTING_PAGE_INDEX) null else page.minus(1),
-                nextKey = if (response.hits.isEmpty()) null else page.plus(1)
+                nextKey = if (hits.isEmpty()) null else page.plus(1)
             )
-        } catch (exception: Exception) {
+        } catch (exception: IOException) {
             return LoadResult.Error(exception)
+        } catch (e: HttpException) {
+            return LoadResult.Error(e)
         }
     }
 
