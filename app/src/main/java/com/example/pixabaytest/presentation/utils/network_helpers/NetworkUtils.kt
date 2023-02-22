@@ -1,4 +1,4 @@
-package com.example.pixabaytest.utils.network_helpers
+package com.example.pixabaytest.presentation.utils.network_helpers
 
 import android.content.Context
 import android.net.ConnectivityManager

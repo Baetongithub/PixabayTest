@@ -1,4 +1,4 @@
-package com.example.pixabaytest.utils.extensions
+package com.example.pixabaytest.presentation.utils.extensions
 
 import android.view.View
 

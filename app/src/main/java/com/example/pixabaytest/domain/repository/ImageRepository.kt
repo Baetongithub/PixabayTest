@@ -1,4 +1,4 @@
-package com.example.pixabaytest.ui.main_load_image
+package com.example.pixabaytest.domain
 
 import androidx.paging.PagingData
 import com.example.pixabaytest.data.model.Hit

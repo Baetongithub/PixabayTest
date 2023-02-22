@@ -1,4 +1,4 @@
-package com.example.pixabaytest.utils.extensions
+package com.example.pixabaytest.presentation.utils.extensions
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner

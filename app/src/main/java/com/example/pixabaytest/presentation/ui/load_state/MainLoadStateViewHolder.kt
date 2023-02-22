@@ -1,4 +1,4 @@
-package com.example.pixabaytest.ui.load_state
+package com.example.pixabaytest.presentation.ui.load_state
 
 import android.view.LayoutInflater
 import android.view.View

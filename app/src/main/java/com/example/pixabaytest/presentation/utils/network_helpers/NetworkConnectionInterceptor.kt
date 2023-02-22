@@ -1,7 +1,7 @@
-package com.example.pixabaytest.utils.network_helpers
+package com.example.pixabaytest.presentation.utils.network_helpers
 
 import android.content.Context
-import com.example.pixabaytest.utils.network_helpers.NetworkUtils.isNetworkAvailable
+import com.example.pixabaytest.presentation.utils.network_helpers.NetworkUtils.isNetworkAvailable
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

@@ -1,4 +1,4 @@
-package com.example.pixabaytest.ui.main_load_image
+package com.example.pixabaytest.presentation.ui.main_load_image
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

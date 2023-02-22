@@ -1,4 +1,4 @@
-package com.example.pixabaytest.ui.main_load_image
+package com.example.pixabaytest.presentation.ui.main_load_image
 
 import android.content.Context
 import android.content.Intent
@@ -7,24 +7,22 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.example.pixabaytest.data.model.Hit
 import com.example.pixabaytest.databinding.ActivityMainBinding
-import com.example.pixabaytest.ui.DetailedImageActivity
-import com.example.pixabaytest.ui.load_state.MyLoadStateAdapter
-import com.example.pixabaytest.utils.CheckInternet
-import com.example.pixabaytest.utils.Constants
-import com.example.pixabaytest.utils.extensions.collect
-import com.example.pixabaytest.utils.extensions.gone
-import com.example.pixabaytest.utils.extensions.visible
+import com.example.pixabaytest.presentation.ui.deatiled_images.DetailedImageActivity
+import com.example.pixabaytest.presentation.ui.load_state.MyLoadStateAdapter
+import com.example.pixabaytest.presentation.utils.CheckInternet
+import com.example.pixabaytest.presentation.utils.Constants
+import com.example.pixabaytest.presentation.utils.extensions.gone
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -43,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(vb.root)
 
         initViews()
-        setUpAdapter()
+        setupRecyclerView()
         checkInternet()
 
         lifecycleScope.launch {
@@ -55,8 +53,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
 
-        vb.fabSearch.setOnClickListener {
-            loadImages()
+        with(vb) {
+            fabSearch.setOnClickListener {
+                loadImages()
+            }
         }
     }
 
@@ -74,16 +74,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpAdapter() {
-
-        collect(flow = pagingAdapter.loadStateFlow
-            .distinctUntilChangedBy { it.source.refresh }
-            .map { it.refresh },
-            action = { pagingAdapter.retry() })
-
-        vb.recyclerView.apply {
+    private fun setupRecyclerView() = with(vb) {
+        recyclerView.apply {
             layoutManager = gridLayoutManager
-            adapter = pagingAdapter.withLoadStateFooter(loadStateAdapter)
+            adapter = pagingAdapter.withLoadStateFooter(footer = loadStateAdapter)
 
             addOnScrollListener(object : OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -94,6 +88,15 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
+
+        pagingAdapter.addLoadStateListener { loadStates ->
+            recyclerView.isVisible = loadStates.refresh is LoadState.NotLoading
+            progressBar.isVisible = loadStates.refresh is LoadState.Loading
+            tvNoInternet.isVisible = loadStates.refresh is LoadState.Error
+            btnRetry.isVisible = loadStates.refresh is LoadState.Error
+        }
+
+        btnRetry.setOnClickListener { pagingAdapter.retry() }
         centralizeRetryButton()
     }
 
@@ -109,12 +112,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkInternet(){
+    private fun checkInternet() {
         val ccs = CheckInternet(application)
-        ccs.observe(this) {
-            vb.tvNoInternetMainActivity.gone = it
-            vb.btnRetryMain.gone = it
-            vb.recyclerView.visible = it
+        ccs.observe(this) { isInternetOn ->
+            vb.tvNoInternetMainActivity.gone = isInternetOn
         }
     }
 

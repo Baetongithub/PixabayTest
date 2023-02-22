@@ -1,4 +1,4 @@
-package com.example.pixabaytest.utils
+package com.example.pixabaytest.presentation.utils
 
 import android.content.ContentValues
 import android.content.Context
@@ -10,7 +10,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.widget.ImageView
 import com.example.pixabaytest.R
-import com.example.pixabaytest.utils.extensions.toast
+import com.example.pixabaytest.presentation.utils.extensions.toast
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream

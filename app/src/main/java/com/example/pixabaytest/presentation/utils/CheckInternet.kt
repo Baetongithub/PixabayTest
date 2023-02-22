@@ -1,4 +1,4 @@
-package com.example.pixabaytest.utils
+package com.example.pixabaytest.presentation.utils
 
 import android.app.Application
 import android.content.Context
