@@ -8,14 +8,15 @@ import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import com.example.pixabaytest.R
 import com.example.pixabaytest.databinding.ActivityDetailedImageBinding
 import com.example.pixabaytest.databinding.BottomSheetCommentsBinding
 import com.example.pixabaytest.domain.model.Hit
-import com.example.pixabaytest.presentation.ui.main_load_image.ImagePagerAdapter
-import com.example.pixabaytest.presentation.ui.main_load_image.LoadImageViewModel
+import com.example.pixabaytest.presentation.ui.main.ImagePagerAdapter
+import com.example.pixabaytest.presentation.ui.main.LoadImageViewModel
 import com.example.pixabaytest.presentation.utils.Constants
 import com.example.pixabaytest.presentation.utils.SavePhotoToStorage
 import com.example.pixabaytest.presentation.utils.extensions.toast
@@ -25,6 +26,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
+@ExperimentalPagingApi
 @AndroidEntryPoint
 class DetailedImageActivity : AppCompatActivity() {
 

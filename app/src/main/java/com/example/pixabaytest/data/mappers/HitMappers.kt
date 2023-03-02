@@ -1,6 +1,6 @@
 package com.example.pixabaytest.data.mappers
 
-import com.example.pixabaytest.data.model.HitEntity
+import com.example.pixabaytest.data.local.model.HitEntity
 import com.example.pixabaytest.domain.model.Hit
 
 fun Hit.toHitEntity() = HitEntity(

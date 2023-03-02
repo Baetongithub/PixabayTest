@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.main_load_image.MainActivity">
+    tools:context=".presentation.ui.main.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -67,24 +67,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
-    <TextView
-        android:id="@+id/tv_no_internet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="No Internet"
-        android:textSize="15sp" />
-
-    <Button
-        android:id="@+id/btn_retry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_no_internet"
-        android:layout_centerHorizontal="true"
-        android:text="Retry"
-        android:textAllCaps="false"
-        android:textSize="15sp" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
@@ -92,5 +74,15 @@
         android:layout_below="@id/tv_no_internet_main_activity"
         app:spanCount="2"
         tools:listitem="@layout/item_images" />
+
+    <Button
+        android:id="@+id/btn_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Retry"
+        android:textAllCaps="false"
+        android:textSize="15sp" />
 
 </RelativeLayout>

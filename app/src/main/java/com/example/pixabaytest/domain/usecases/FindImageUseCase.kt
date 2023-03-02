@@ -6,5 +6,5 @@ import javax.inject.Inject
 class FindImageUseCase @Inject constructor(
     private val repository: ImageRepository
 ) {
-    fun findImage(keyWord: String) = repository.getPagedImages(keyWord = keyWord)
+    fun findImage(keyWord: String) = repository.searchImages(keyWord = keyWord)
 }

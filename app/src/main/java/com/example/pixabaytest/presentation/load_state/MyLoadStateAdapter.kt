@@ -1,4 +1,4 @@
-package com.example.pixabaytest.presentation.ui.load_state
+package com.example.pixabaytest.presentation.load_state
 
 import android.view.ViewGroup
 import androidx.paging.LoadState

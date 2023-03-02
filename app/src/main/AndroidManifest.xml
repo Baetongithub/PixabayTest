@@ -24,7 +24,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".presentation.ui.main_load_image.MainActivity"
+            android:name=".presentation.ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

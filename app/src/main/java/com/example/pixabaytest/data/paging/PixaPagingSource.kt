@@ -1,8 +1,9 @@
-package com.example.pixabaytest.data.remote.network
+package com.example.pixabaytest.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.pixabaytest.data.mappers.toHit
+import com.example.pixabaytest.data.remote.network.PixaAPI
 import com.example.pixabaytest.domain.model.Hit
 import retrofit2.HttpException
 import java.io.IOException
@@ -16,7 +17,7 @@ class PixaPagingSource(
         val page = params.key ?: STARTING_PAGE_INDEX
 
         return try {
-            val response = pixaAPI.getImages(keyWord = keyWord, page = page)
+            val response = pixaAPI.searchImages(keyWord = keyWord, page = page)
 
             val hits = response.hits.map { it.toHit() }
             LoadResult.Page(

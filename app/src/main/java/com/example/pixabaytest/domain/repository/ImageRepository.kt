@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface ImageRepository {
 
-    fun getPagedImages(keyWord: String): Flow<PagingData<Hit>>
+    fun searchImages(keyWord: String): Flow<PagingData<Hit>>
 }
